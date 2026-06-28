@@ -1,11 +1,44 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>ツールポータル</title></head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF14 Tool Portal</title>
+    <style>
+        :root { --bg: #F5F5F7; --text: #2C302E; --accent: #E0B0B0; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: var(--bg); color: var(--text);
+            display: flex; flex-direction: column; align-items: center; 
+            padding: 50px 20px; margin: 0; min-height: 100vh;
+        }
+        h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; margin-bottom: 40px; }
+        .grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; width: 100%; max-width: 800px; 
+        }
+        .card { 
+            background: white; padding: 30px; border-radius: 16px; 
+            text-decoration: none; color: var(--text);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .card h2 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--accent); }
+        .card p { font-size: 0.9rem; color: #636366; line-height: 1.6; }
+    </style>
+</head>
 <body>
-    <h1>ツール一覧</h1>
-    <ul>
-    <li><a href="./ynmagcard/">FF14 マガジンカード (ynmagcard)</a></li>
-    <li><a href="./ynprofcard/">FF14 プロフカード (ynprofcard)</a></li>
-</ul>
+    <h1>FF14 Tool Portal</h1>
+    <div class="grid">
+        <a href="./ynmagcard/" class="card">
+            <h2>Magazine Card Generator</h2>
+            <p>キャラクターの魅力を引き立てる、洗練されたデザインのマガジン風カードを生成します。</p>
+        </a>
+        <a href="./ynprofcard/" class="card">
+            <h2>Profile Card Generator</h2>
+            <p>SNSでの交流に最適な、シンプルで見やすいプロフカードを作成します。</p>
+        </a>
+    </div>
 </body>
 </html>

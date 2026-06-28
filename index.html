@@ -21,8 +21,12 @@
         .card p { font-size: 0.95rem; color: #636366; line-height: 1.6; }
         
         .button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { display: block; padding: 8px; text-align: center; border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: bold; background: #eee; color: #555; }
+        /* 共通のボタンデザイン */
+        .btn { display: block; padding: 10px; text-align: center; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: bold; transition: 0.2s; }
+        /* 日本語版: 色付き・有効 */
         .btn.jp { background: var(--accent); color: white; }
+        /* その他: 薄いグレー・無効化 */
+        .btn.disabled { background: #f5f5f5; color: #b0b0b0; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -52,9 +56,9 @@
             </div>
             <div class="button-group">
                 <a href="./ynmagcard/" class="btn jp">日本語版</a>
-                <a href="#" class="btn">English Ver</a>
-                <a href="#" class="btn">한국어 Ver</a>
-                <a href="#" class="btn">中文版</a>
+                <a href="#" class="btn disabled">English Ver</a>
+                <a href="#" class="btn disabled">한국어 Ver</a>
+                <a href="#" class="btn disabled">中文版</a>
             </div>
         </div>
         <div class="card">
@@ -64,35 +68,19 @@
             </div>
             <div class="button-group">
                 <a href="./ynprofcard/" class="btn jp">日本語版</a>
-                <a href="#" class="btn">English Ver</a>
-                <a href="#" class="btn">한국어 Ver</a>
-                <a href="#" class="btn">中文版</a>
+                <a href="#" class="btn disabled">English Ver</a>
+                <a href="#" class="btn disabled">한국어 Ver</a>
+                <a href="#" class="btn disabled">中文版</a>
             </div>
         </div>
     </div>
 
     <script>
         const translations = {
-            jp: { 
-                title: "Yunoᒼᑋªⁿからのお知らせ", 
-                notice: ["現在、各言語版へのローカライズを順次進めています。そのため、現在は日本語版に集約しています。", "ローカライズには時間がかかりそうなので、気長に待っててね。", "スマホ版は現在修正中です。PCでの操作を推奨しています。", "Photo Filter機能は現在修正中のため使用できません。"], 
-                mag: "マガジン風のキャラクターカードを作成します。", prof: "シンプルで見やすいキャラクターカードを作成します。" 
-            },
-            en: { 
-                title: "Notice from Yunoᒼᑋªⁿ", 
-                notice: ["We are working on localization for each language version, so we have consolidated them into the Japanese version for now.", "Localization might take a while, so please be patient and wait for it.", "The mobile version is currently under maintenance. We recommend using a PC.", "The Photo Filter feature is currently under maintenance and is unavailable."], 
-                mag: "Create a magazine-style character card.", prof: "Create a simple and easy-to-read character card." 
-            },
-            kr: { 
-                title: "Yunoᒼᑋªⁿ 공지사항", 
-                notice: ["현재 각 언어별 현지화 작업을 순차적으로 진행 중입니다. 따라서 현재는 일본어 버전으로 통합되어 있습니다.", "현지화 작업에 시간이 조금 걸릴 것 같으니, 느긋하게 기다려주세요.", "모바일 버전은 수정 중입니다. PC 사용을 권장합니다.", "Photo Filter 기능은 현재 수정 중으로 사용할 수 없습니다."], 
-                mag: "잡지 스타일의 캐릭터 카드를 만듭니다.", prof: "심플하고 보기 편한 캐릭터 카드를 만듭니다." 
-            },
-            cn: { 
-                title: "来自 Yunoᒼᑋªⁿ 的公告", 
-                notice: ["目前正在陆续推进各语言版本的本地化适配，因此目前整合为日语版本。", "本地化工作可能需要一些时间，请耐心等待哦。", "手机版正在修复中，建议使用电脑操作。", "Photo Filter 功能目前正在修复中，暂时无法使用。"], 
-                mag: "制作杂志风格的角色卡。", prof: "制作简洁易读的角色卡。" 
-            }
+            jp: { title: "Yunoᒼᑋªⁿからのお知らせ", notice: ["現在、各言語版へのローカライズを順次進めています。そのため、現在は日本語版に集約しています。", "ローカライズには時間がかかりそうなので、気長に待っててね。", "スマホ版は現在修正中です。PCでの操作を推奨しています。", "Photo Filter機能は現在修正中のため使用できません。"], mag: "マガジン風のキャラクターカードを作成します。", prof: "シンプルで見やすいキャラクターカードを作成します。" },
+            en: { title: "Notice from Yunoᒼᑋªⁿ", notice: ["We are working on localization for each language version, so we have consolidated them into the Japanese version for now.", "Localization might take a while, so please be patient and wait for it.", "The mobile version is currently under maintenance. We recommend using a PC.", "The Photo Filter feature is currently under maintenance and is unavailable."], mag: "Create a magazine-style character card.", prof: "Create a simple and easy-to-read character card." },
+            kr: { title: "Yunoᒼᑋªⁿ 공지사항", notice: ["현재 각 언어별 현지화 작업을 순차적으로 진행 중입니다. 따라서 현재는 일본어 버전으로 통합되어 있습니다.", "현지화 작업에 시간이 조금 걸릴 것 같으니, 느긋하게 기다려주세요.", "모바일 버전은 수정 중입니다. PC 사용을 권장합니다.", "Photo Filter 기능은 현재 수정 중으로 사용할 수 없습니다."], mag: "잡지 스타일의 캐릭터 카드를 만듭니다.", prof: "심플하고 보기 편한 캐릭터 카드를 만듭니다." },
+            cn: { title: "来自 Yunoᒼᑋªⁿ 的公告", notice: ["目前正在陆续推进各语言版本的本地化适配，因此目前整合为日语版本。", "本地化工作可能需要一些时间，请耐心等待哦。", "手机版正在修复中，建议使用电脑操作。", "Photo Filter 功能目前正在修复中，暂时无法使用。"], mag: "制作杂志风格的角色卡。", prof: "制作简洁易读的角色卡。" }
         };
 
         function setLang(lang, btn) {

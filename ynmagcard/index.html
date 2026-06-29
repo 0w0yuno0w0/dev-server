@@ -1001,8 +1001,17 @@
         document.getElementById('val-mag-size').innerText = e.target.value + 'px';
     });
     document.getElementById('input-mag-opacity').addEventListener('input', (e) => {
-        cardMagTitle.style.opacity = e.target.value / 100;
+        const alpha = e.target.value / 100;
         document.getElementById('val-mag-opacity').innerText = e.target.value + '%';
+        const baseColor = getComputedStyle(document.documentElement).getPropertyValue('--text-theme-color').trim();
+        let r = 255, g = 255, b2 = 255;
+        const hexM = baseColor.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+        const rgbM = baseColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+        if (hexM) { r = parseInt(hexM[1],16); g = parseInt(hexM[2],16); b2 = parseInt(hexM[3],16); }
+        else if (rgbM) { r = parseInt(rgbM[1]); g = parseInt(rgbM[2]); b2 = parseInt(rgbM[3]); }
+        cardMagTitle.style.color = 'rgba(' + r + ',' + g + ',' + b2 + ',' + alpha + ')';
+        cardMagTitle.style.opacity = '';
+        cardMagTitle.dataset.opacityAlpha = alpha;
     });
     document.getElementById('input-mag-font').addEventListener('change', (e) => {
         cardMagTitle.style.fontFamily = e.target.value;
@@ -1428,6 +1437,17 @@
         const t = themes[e.target.value] || themes['light'];
         document.documentElement.style.setProperty('--text-theme-color', t.color);
         document.documentElement.style.setProperty('--text-shadow-style', t.shadow);
+        const savedAlpha = parseFloat(cardMagTitle.dataset.opacityAlpha);
+        if (!isNaN(savedAlpha) && savedAlpha < 1) {
+            const hexM2 = t.color.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+            const rgbM2 = t.color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+            let r2=255,g2=255,b3=255;
+            if (hexM2){r2=parseInt(hexM2[1],16);g2=parseInt(hexM2[2],16);b3=parseInt(hexM2[3],16);}
+            else if (rgbM2){r2=parseInt(rgbM2[1]);g2=parseInt(rgbM2[2]);b3=parseInt(rgbM2[3]);}
+            cardMagTitle.style.color = 'rgba(' + r2 + ',' + g2 + ',' + b3 + ',' + savedAlpha + ')';
+        } else {
+            cardMagTitle.style.color = '';
+        }
     });
     
     document.getElementById('input-filter').addEventListener('change', (e) => { document.getElementById('card-image').style.filter = e.target.value; });

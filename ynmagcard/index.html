@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VISQUE Inspire - Ultimate Edition</title>
+    <title>Magazine Character Card Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@200;400;500;700&family=Playfair+Display:wght@400;700&family=Libre+Baskerville:wght@400;700&family=Josefin+Sans:wght@200;400;700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
@@ -506,8 +506,29 @@
     border-top: 1px solid #ccc;
 }
 
-
-
+/* ポップアップ用スタイル */
+#popup-overlay { 
+    display: none; /* ここが重要：デフォルトで非表示にする */
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.8); 
+    z-index: 2000; 
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column; 
+}
+#popup-overlay img { 
+    max-width: 90%; 
+    max-height: 80%; 
+    border-radius: 4px; 
+    box-shadow: 0 0 20px rgba(255,255,255,0.2); 
+}
+#popup-message { 
+    color: white; 
+    margin-top: 15px; 
+    font-size: 14px; 
+}
 
         }
     </style>
@@ -682,8 +703,8 @@
                         <option value="DYNAMIS / KRAKEN">Kraken</option>
                         <option value="DYNAMIS / MADUIN">Maduin</option>
                         <option value="DYNAMIS / MARILITH">Marilith</option>
+                        <option value="DYNAMIS / RAFFLESIA">Rafflesia</option>
                         <option value="DYNAMIS / SERAPH">Seraph</option>
-                        <option value="DYNAMIS / SOPHIA">Sophia</option>
                     </optgroup>
                     <optgroup label="Primal">
                         <option value="PRIMAL / BEHEMOTH">Behemoth</option>
@@ -716,12 +737,6 @@
                         <option value="LIGHT / TWINTANIA">Twintania</option>
                         <option value="LIGHT / ZODIARK">Zodiark</option>
                     </optgroup>
-                    <optgroup label="Shadow">
-                        <option value="SHADOW / INNOCENCE">Innocence</option>
-                        <option value="SHADOW / PIXIE">Pixie</option>
-                        <option value="SHADOW / TITANIA">Titania</option>
-                        <option value="SHADOW / TYCOON">Tycoon</option>
-                    </optgroup>
                     <optgroup label="── Oceania ──" disabled></optgroup>
                     <optgroup label="Materia">
                         <option value="MATERIA / BISMARCK">Bismarck</option>
@@ -740,43 +755,50 @@
                     </optgroup>
                     <optgroup label="── China ──" disabled></optgroup>
                     <optgroup label="陆行鸟 (Chocobo)">
-                        <option value="陆行鸟 / 红玉海">红玉海 (Hongyu Hai)</option>
-                        <option value="陆行鸟 / 神意之地">神意之地 (Shényi zhī Dì)</option>
-                        <option value="陆行鸟 / 拉诺西亚">拉诺西亚 (Lā nuò xī yà)</option>
-                        <option value="陆行鸟 / 幻影群岛">幻影群岛 (Huànyǐng Qúndǎo)</option>
-                        <option value="陆行鸟 / 萌芽池">萌芽池 (Méng yá Chí)</option>
-                        <option value="陆行鸟 / 宇宙和音">宇宙和音 (Yǔzhòu Héyīn)</option>
-                        <option value="陆行鸟 / 沃仙曦染">沃仙曦染 (Wò xiān Xī Rǎn)</option>
-                        <option value="陆行鸟 / 海猫茶屋">海猫茶屋 (Hǎi māo Cháwū)</option>
+                        <option value="CHINA / 拉诺西亚">La Noscea</option>
+                        <option value="CHINA / 幻影群岛">Phantom Islands</option>
+                        <option value="CHINA / 神意之地">God's Revel</option>
+                        <option value="CHINA / 萌芽池">Spriggan</option>
+                        <option value="CHINA / 红玉海">Ruby Sea</option>
+                        <option value="CHINA / 宇宙和音">Cosmo Acoustic</option>
+                        <option value="CHINA / 沃仙曦染">Wolf Wolf</option>
+                        <option value="CHINA / 晨曦王座">Dawn Throne</option>
                     </optgroup>
                     <optgroup label="莫古力 (Moogle)">
-                        <option value="莫古力 / 水晶塔">水晶塔 (Shuǐjīng Tǎ)</option>
-                        <option value="莫古力 / 银泪湖">银泪湖 (Yín lèi Hú)</option>
-                        <option value="莫古力 / 太阳海岸">太阳海岸 (Tàiyáng Hǎiàn)</option>
-                        <option value="莫古力 / 图书馆">图书馆 (Túshūguǎn)</option>
-                        <option value="莫古力 / 黄金港">黄金港 (Huángjīn Gǎng)</option>
-                        <option value="莫古力 / 伊修加德">伊修加德 (Yī xiū jiā dé)</option>
-                        <option value="莫古力 / 柔风海湾">柔风海湾 (Róufēng Hǎiwān)</option>
-                        <option value="莫古力 / 琥珀原">琥珀原 (Hǔpò Yuán)</option>
+                        <option value="CHINA / 潮风亭">Typhoon</option>
+                        <option value="CHINA / 神拳痕">Shenquanhen</option>
+                        <option value="CHINA / 白银乡">Shirogane</option>
+                        <option value="CHINA / 白金幻象">Platinum Mirage</option>
+                        <option value="CHINA / 旅人栈桥">Traveler Bridge</option>
+                        <option value="CHINA / 拂晓之间">Dawn</option>
+                        <option value="CHINA / 龙巢神殿">Dragon Nest</option>
+                        <option value="CHINA / 梦羽宝境">Dream Feather</option>
                     </optgroup>
                     <optgroup label="猫小胖 (Fat Cat)">
-                        <option value="猫小胖 / 延夏">延夏 (Yán Xià)</option>
-                        <option value="猫小胖 / 静语庄园">静语庄园 (Jìngyǔ Zhuāngyuán)</option>
-                        <option value="猫小胖 / 摩杜纳">摩杜纳 (Mó dù nà)</option>
-                        <option value="猫小胖 / 海湾都市">海湾都市 (Hǎiwān Dūshì)</option>
-                        <option value="猫小胖 / 旅人栈桥">旅人栈桥 (Lǚrén Zhànqiáo)</option>
-                        <option value="猫小胖 / 白银乡">白银乡 (Báiyín Xiāng)</option>
-                        <option value="猫小胖 / 梦羽宝境">梦羽宝境 (Mèng yǔ Bǎojìng)</option>
-                        <option value="猫小胖 / 神拳痕">神拳痕 (Shén quán Hén)</option>
+                        <option value="CHINA / 紫水栈桥">Zishui</option>
+                        <option value="CHINA / 延夏">Yanxia</option>
+                        <option value="CHINA / 静语庄园">Haukke Manor</option>
+                        <option value="CHINA / 摩杜纳">Mor Dhona</option>
+                        <option value="CHINA / 海猫茶屋">Sea Cat</option>
+                        <option value="CHINA / 柔风海湾">Soft Wind</option>
+                        <option value="CHINA / 琥珀原">Amber</option>
                     </optgroup>
                     <optgroup label="豆豆柴 (Shiba)">
-                        <option value="豆豆柴 / 拂晓之间">拂晓之间 (Fǔ xiǎo zhī jiān)</option>
-                        <option value="豆豆柴 / 龙巢神殿">龙巢神殿 (Lóngcháo Shéndiàn)</option>
-                        <option value="豆豆柴 / 月牙湾">月牙湾 (Yuèyá Wān)</option>
-                        <option value="豆豆柴 / 天空之城">天空之城 (Tiānkōng zhī Chéng)</option>
-                        <option value="豆豆柴 / 大泽地">大泽地 (Dà zé dì)</option>
-                        <option value="豆豆柴 / 风车西岭">风车西岭 (Fēngchē Xīlǐng)</option>
-                        <option value="豆豆柴 / 红茶川">红茶川 (Hóng chá Chuān)</option>
+                        <option value="CHINA / 水晶塔">Crystal Tower</option>
+                        <option value="CHINA / 银泪湖">Silver Tear</option>
+                        <option value="CHINA / 太阳海岸">Costa del Sol</option>
+                        <option value="CHINA / 伊修加德">Ishgard</option>
+                        <option value="CHINA / 红茶川">Red Tea River</option>
+                    </optgroup>
+                    <optgroup label="── 繁體中文版 ──" disabled></optgroup>
+                    <optgroup label="繁體中文版 (Global)">
+                        <option value="Global / 伊弗利特">Ifrit</option>
+                        <option value="Global / 利維坦">Leviathan</option>
+                        <option value="Global / 迦樓羅">Garuda</option>
+                        <option value="Global / 泰坦">Titan</option>
+                        <option value="Global / 巴哈姆特">Bahamut</option>
+                        <option value="Global / 鳳凰">Phoenix</option>
+                        <option value="Global / 奧丁">Odin</option>
                     </optgroup>
                 </select>
             </div>
@@ -1636,29 +1658,38 @@
                         clonedTitle.style.setProperty('text-shadow', shadowBeforeCapture, 'important');
                     }
                 },
-            }).then(canvas => {
+}).then(canvas => {
+    // 4. 撮影完了後、元のスタイルに戻す
+    cardEl2.style.cssText = origStyleCssText;
+    cardMagTitle.style.color = origTitleColor;
 
-                // 4. 撮影完了後、元のスタイルに戻す
-                cardEl2.style.cssText = origStyleCssText;
-                cardMagTitle.style.color = origTitleColor;
+    const dataUrl = canvas.toDataURL('image/png');
+    const popupOverlay = document.getElementById('popup-overlay');
 
-                // 5. Blobに変換してダウンロード
-                canvas.toBlob((blob) => {
-                    if (!blob) return;
-                    const fileName = `${document.getElementById('card-name').innerText}_magazine.png`;
-                    const fileUrl = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.download = fileName;
-                    link.href = fileUrl;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(fileUrl);
-                }, 'image/png');
-
-            });
+    // スマホ判定：幅が1000px以下の場合
+    if (window.innerWidth <= 1000) {
+        const popupImage = document.getElementById('popup-image');
+        popupImage.src = dataUrl;
+        popupOverlay.style.display = 'flex'; // スマホだけ表示
+    } else {
+        // PCの場合：ポップアップは非表示にし、ダウンロードを実行
+        popupOverlay.style.display = 'none'; 
+        
+        const fileName = `${document.getElementById('card-name').innerText}_magazine.png`;
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+});
         }, 300);
     });
 </script>
+<div id="popup-overlay">
+    <img id="popup-image" src="" alt="Generated Card">
+    <div id="popup-message">画像を長押しして保存してください</div>
+</div>
 </body>
 </html>

@@ -1611,14 +1611,14 @@
         // 3. ブラウザがレイアウトを確定するまで少し待つ
         setTimeout(() => {
             html2canvas(cardEl2, {
-                scale: 2,
+                scale: 1,
                 useCORS: true,
                 logging: false,
                 backgroundColor: null,
                 width: 400,
                 height: 550,
-                windowWidth: 1280,   // ページ全体の幅を通常のデスクトップ幅に設定（スマホ幅だとメディアクエリが再適用されてズレる）
-                windowHeight: 900,
+                windowWidth: 400,   // ページ全体の幅を通常のデスクトップ幅に設定（スマホ幅だとメディアクエリが再適用されてズレる）
+                windowHeight: 550,
                 x: 0,
                 y: 0,
                 scrollX: 0,

@@ -1644,18 +1644,21 @@
                 cardMagTitle.style.color = origTitleColor;
 
                 // 5. Blobに変換してダウンロード
-                canvas.toBlob((blob) => {
-                    if (!blob) return;
-                    const fileName = `${document.getElementById('card-name').innerText}_magazine.png`;
-                    const fileUrl = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.download = fileName;
-                    link.href = fileUrl;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(fileUrl);
-                }, 'image/png');
+canvas.toBlob((blob) => {
+    const fileUrl = URL.createObjectURL(blob);
+    
+    // ダウンロードボタンを「保存」リンクに変えてしまう
+    const downloadLink = document.createElement('a');
+    downloadLink.href = fileUrl;
+    downloadLink.download = `${document.getElementById('card-name').innerText}_magazine.png`;
+    downloadLink.innerText = "ダウンロードを開始する";
+    downloadLink.style.display = "block";
+    downloadLink.style.padding = "16px";
+    
+    // 元のボタンと置き換える
+    const btn = document.getElementById('download-btn');
+    btn.parentNode.replaceChild(downloadLink, btn);
+}, 'image/png');
 
             });
         }, 300);

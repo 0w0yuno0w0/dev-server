@@ -1584,6 +1584,7 @@
 
         // 1. 現在のインラインスタイルをすべて退避
         const origStyleCssText = cardEl2.style.cssText;
+        const origTitleColor = cardMagTitle.style.color;
 
         // 2. カードを 400x550 の素の状態に強制リセット
         //    transform / scale などをすべて解除してキャプチャに備える
@@ -1595,6 +1596,12 @@
             'margin: 0 !important',
             'position: relative !important',
         ].join('; ');
+
+        // 2.5 EORZEAタイトルの透明度(rgba)を html2canvas のクローン処理直前に再適用する。
+        //     html2canvas は DOM を複製してからレンダリングするため、複製前後で
+        //     computed style のタイミングがずれ、rgba() のアルファ値が失われることがある。
+        const titleColorBeforeCapture = getComputedStyle(cardMagTitle).color;
+        cardMagTitle.style.color = titleColorBeforeCapture;
 
         // 3. ブラウザがレイアウトを確定するまで少し待つ
         setTimeout(() => {
@@ -1611,11 +1618,25 @@
                 y: 0,
                 scrollX: 0,
                 scrollY: 0,
+                letterRendering: true, // 文字を1文字ずつ正確に描画し、半透明テキストの濃淡誤差を軽減する
                 ignoreElements: (el) => false,
+                onclone: (clonedDoc) => {
+                    // クローンされたドキュメント内のタイトル要素にも同じ rgba() を強制適用する。
+                    // html2canvas はクローン後の DOM のスタイルを参照するため、ここで
+                    // 直接インラインスタイルを設定することで透明度の取りこぼしを防ぐ。
+                    const clonedTitle = clonedDoc.getElementById('card-mag-title');
+                    if (clonedTitle) {
+                        clonedTitle.style.setProperty('color', titleColorBeforeCapture, 'important');
+                        // text-shadow も明示的に固定し、影の重なりによる見た目の濃淡差を防ぐ
+                        const shadowBeforeCapture = getComputedStyle(cardMagTitle).textShadow;
+                        clonedTitle.style.setProperty('text-shadow', shadowBeforeCapture, 'important');
+                    }
+                },
             }).then(canvas => {
 
                 // 4. 撮影完了後、元のスタイルに戻す
                 cardEl2.style.cssText = origStyleCssText;
+                cardMagTitle.style.color = origTitleColor;
 
                 // 5. Blobに変換してダウンロード
                 canvas.toBlob((blob) => {

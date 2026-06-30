@@ -506,29 +506,8 @@
     border-top: 1px solid #ccc;
 }
 
-/* ポップアップ用スタイル */
-#popup-overlay { 
-    display: none; /* ここが重要：デフォルトで非表示にする */
-    position: fixed; 
-    top: 0; left: 0; 
-    width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.8); 
-    z-index: 2000; 
-    justify-content: center; 
-    align-items: center; 
-    flex-direction: column; 
-}
-#popup-overlay img { 
-    max-width: 90%; 
-    max-height: 80%; 
-    border-radius: 4px; 
-    box-shadow: 0 0 20px rgba(255,255,255,0.2); 
-}
-#popup-message { 
-    color: white; 
-    margin-top: 15px; 
-    font-size: 14px; 
-}
+
+
 
         }
     </style>
@@ -1658,38 +1637,29 @@
                         clonedTitle.style.setProperty('text-shadow', shadowBeforeCapture, 'important');
                     }
                 },
-}).then(canvas => {
-    // 4. 撮影完了後、元のスタイルに戻す
-    cardEl2.style.cssText = origStyleCssText;
-    cardMagTitle.style.color = origTitleColor;
+            }).then(canvas => {
 
-    const dataUrl = canvas.toDataURL('image/png');
-    const popupOverlay = document.getElementById('popup-overlay');
+                // 4. 撮影完了後、元のスタイルに戻す
+                cardEl2.style.cssText = origStyleCssText;
+                cardMagTitle.style.color = origTitleColor;
 
-    // スマホ判定：幅が1000px以下の場合
-    if (window.innerWidth <= 1000) {
-        const popupImage = document.getElementById('popup-image');
-        popupImage.src = dataUrl;
-        popupOverlay.style.display = 'flex'; // スマホだけ表示
-    } else {
-        // PCの場合：ポップアップは非表示にし、ダウンロードを実行
-        popupOverlay.style.display = 'none'; 
-        
-        const fileName = `${document.getElementById('card-name').innerText}_magazine.png`;
-        const link = document.createElement('a');
-        link.download = fileName;
-        link.href = dataUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-});
+                // 5. Blobに変換してダウンロード
+                canvas.toBlob((blob) => {
+                    if (!blob) return;
+                    const fileName = `${document.getElementById('card-name').innerText}_magazine.png`;
+                    const fileUrl = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = fileName;
+                    link.href = fileUrl;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(fileUrl);
+                }, 'image/png');
+
+            });
         }, 300);
     });
 </script>
-<div id="popup-overlay">
-    <img id="popup-image" src="" alt="Generated Card">
-    <div id="popup-message">画像を長押しして保存してください</div>
-</div>
 </body>
 </html>

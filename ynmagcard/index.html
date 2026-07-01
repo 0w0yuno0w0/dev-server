@@ -37,6 +37,7 @@
             --text-theme-color: #FFFFFF;
             --text-shadow-style: 0 2px 12px rgba(0,0,0,0.3);
             --magazine-accent: #E0B0B0;
+            --card-bg-color: #D2D2D7;
         }
 
         body {
@@ -220,7 +221,7 @@
         #character-card {
             width: 400px;
             height: 550px;
-            background-color: #D2D2D7;
+            background-color: var(--card-bg-color);
             position: relative;
             overflow: hidden;
             box-shadow: 0 25px 60px rgba(0,0,0,0.15);
@@ -570,6 +571,31 @@
                         <option value="#D94E34">Sunset Orange (朱色系)</option>
                     </select>
                 </div>
+                <div class="control-row">
+                    <span class="control-label">Background (背景色)</span>
+                    <select id="input-card-bg">
+                        <option value="#D2D2D7" selected>Default (初期値)</option>
+                        <optgroup label="Standard">
+                        <option value="#F5F5F7">Light (明るいグレー)</option>
+                        <option value="#1C1C1E">Dark (ダーク)</option>
+                        <option value="#4A3B14">Gold (ゴールド系)</option>
+                        <option value="#50303B">Rose (ピンク系)</option>
+                        <option value="#243F50">Ice (青系)</option>
+                        <option value="#555555">Smoke (グレー)</option>
+                        <option value="#D7D7D7">Shadow (シャドウ)</option>
+                        <option value="#5C3A1E">Dusk (夕暮れ系)</option>
+                        <option value="#FFFFFF">White (白)</option>
+                        <option value="#000000">Black (黒)</option>
+                        <option value="transparent">Transparent (透明)</option>
+                        </optgroup>
+                        <optgroup label="Pastel">
+                        <option value="#FDE2E4">Pastel Pink (ピンク)</option>
+                        <option value="#FFFACD">Pastel Yellow (イエロー)</option>
+                        <option value="#E2F0CB">Pastel Green (グリーン)</option>
+                        <option value="#D4E4F7">Pastel Blue (ブルー)</option>
+                        </optgroup>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -770,14 +796,14 @@
                         <option value="CHINA / 红茶川">Red Tea River</option>
                     </optgroup>
                     <optgroup label="── 繁體中文版 ──" disabled></optgroup>
-                    <optgroup label="繁體中文版 (Global)">
-                        <option value="Global / 伊弗利特">Ifrit</option>
-                        <option value="Global / 利維坦">Leviathan</option>
-                        <option value="Global / 迦樓羅">Garuda</option>
-                        <option value="Global / 泰坦">Titan</option>
-                        <option value="Global / 巴哈姆特">Bahamut</option>
-                        <option value="Global / 鳳凰">Phoenix</option>
-                        <option value="Global / 奧丁">Odin</option>
+                    <optgroup label="繁體中文版 (Taiwan)">
+                        <option value="Taiwan / 伊弗利特">Ifrit</option>
+                        <option value="Taiwan / 利維坦">Leviathan</option>
+                        <option value="Taiwan / 迦樓羅">Garuda</option>
+                        <option value="Taiwan / 泰坦">Titan</option>
+                        <option value="Taiwan / 巴哈姆特">Bahamut</option>
+                        <option value="Taiwan / 鳳凰">Phoenix</option>
+                        <option value="Taiwan / 奧丁">Odin</option>
                     </optgroup>
                 </select>
             </div>
@@ -888,7 +914,7 @@
                 </div>
                 <div class="control-row">
                     <span class="control-label" style="width: 110px;">左右位置 / Horizontal</span>
-                    <input type="range" id="input-topic-x" min="10" max="250" value="23">
+                    <input type="range" id="input-topic-x" min="10" max="380" value="23">
                     <span class="value-badge" id="val-topic-x">23px</span>
                 </div>
                 <div class="control-row">
@@ -906,7 +932,7 @@
                 </div>
                 <div class="control-row">
                     <span class="control-label" style="width: 110px;">左右位置 / Horizontal</span>
-                    <input type="range" id="input-job-x" min="10" max="350" value="23">
+                    <input type="range" id="input-job-x" min="10" max="380" value="23">
                     <span class="value-badge" id="val-job-x">23px</span>
                 </div>
                 <div class="control-row">
@@ -1462,6 +1488,10 @@
         jobsContainer.querySelectorAll('.role-title').forEach(el => el.style.color = color);
     });
 
+    document.getElementById('input-card-bg').addEventListener('change', (e) => {
+        document.documentElement.style.setProperty('--card-bg-color', e.target.value);
+    });
+
     document.getElementById('input-copyright-color').addEventListener('change', (e) => {
         document.getElementById('copyright-wrapper').style.color = e.target.value;
     });
@@ -1611,14 +1641,14 @@
         // 3. ブラウザがレイアウトを確定するまで少し待つ
         setTimeout(() => {
             html2canvas(cardEl2, {
-                scale: 1,
+                scale: 2,
                 useCORS: true,
                 logging: false,
                 backgroundColor: null,
                 width: 400,
                 height: 550,
-                windowWidth: 400,   // ページ全体の幅を通常のデスクトップ幅に設定（スマホ幅だとメディアクエリが再適用されてズレる）
-                windowHeight: 550,
+                windowWidth: 1280,   // ページ全体の幅を通常のデスクトップ幅に設定（スマホ幅だとメディアクエリが再適用されてズレる）
+                windowHeight: 900,
                 x: 0,
                 y: 0,
                 scrollX: 0,
@@ -1644,21 +1674,18 @@
                 cardMagTitle.style.color = origTitleColor;
 
                 // 5. Blobに変換してダウンロード
-canvas.toBlob((blob) => {
-    const fileUrl = URL.createObjectURL(blob);
-    
-    // ダウンロードボタンを「保存」リンクに変えてしまう
-    const downloadLink = document.createElement('a');
-    downloadLink.href = fileUrl;
-    downloadLink.download = `${document.getElementById('card-name').innerText}_magazine.png`;
-    downloadLink.innerText = "ダウンロードを開始する";
-    downloadLink.style.display = "block";
-    downloadLink.style.padding = "16px";
-    
-    // 元のボタンと置き換える
-    const btn = document.getElementById('download-btn');
-    btn.parentNode.replaceChild(downloadLink, btn);
-}, 'image/png');
+                canvas.toBlob((blob) => {
+                    if (!blob) return;
+                    const fileName = `${document.getElementById('card-name').innerText}_magazine.png`;
+                    const fileUrl = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = fileName;
+                    link.href = fileUrl;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(fileUrl);
+                }, 'image/png');
 
             });
         }, 300);

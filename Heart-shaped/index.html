@@ -222,11 +222,17 @@ function drawPath(context,pts,offsetX=0,offsetY=0){ context.beginPath(); context
 
     // 背景ぼかし
     ctx.save();
-
+// Safariでfilterが効かない場合に備え、ブラウザ対応チェックを入れる
+if (typeof ctx.filter !== 'undefined') {
     ctx.filter =
         `blur(${parseInt(document.getElementById("feather").value)*2}px)
          brightness(0.8)`;
-
+} else {
+// フィルタ非対応ブラウザへのフォールバックとして、
+    // シンプルに背景色で暗くする処理などを行う（必要に応じて）
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillRect(0, 0, w, h);
+}
     ctx.drawImage(
         img,
         (w-img.width*scale)/2 + pX,
